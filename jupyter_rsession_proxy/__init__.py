@@ -97,7 +97,7 @@ def setup_rsession():
         R_HOME, R_SHARE_DIR, R_INCLUDE_DIR, R_DOC_DIR, version = \
             r_output.decode().split(':')
 
-        return {
+        r = {
             'R_DOC_DIR': R_DOC_DIR,
             'R_HOME': R_HOME,
             'R_INCLUDE_DIR': R_INCLUDE_DIR,
@@ -105,6 +105,8 @@ def setup_rsession():
             'RSTUDIO_DEFAULT_R_VERSION_HOME': R_HOME,
             'RSTUDIO_DEFAULT_R_VERSION': version,
         }
+        r.update(dict([(k, v) for k, v in os.environ.items() if k.startswith('JUPYTERHUB_')]))
+        return r
 
     def _get_cmd(port):
         return [
